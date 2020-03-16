@@ -94,3 +94,13 @@ defined('EXIT__AUTO_MAX')      OR define('EXIT__AUTO_MAX', 125); // highest auto
 |Para más información consultar: https://fullcalendar.io/
 */
 define('CALENDARIO', 'traz-comp-calendar/');
+
+/*
+|--------------------------------------------------------------------------
+| REST
+|--------------------------------------------------------------------------
+|
+|Servicios GET, POST, PUT, etc.
+*/
+define('REST9', 'http://localhost:8089/');
+

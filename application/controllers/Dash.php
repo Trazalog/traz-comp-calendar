@@ -1,14 +1,17 @@
-<?php defined('BASEPATH') OR exit('No direct script access allowed');
+<?php defined('BASEPATH') or exit('No direct script access allowed');
 
-class Dash extends CI_Controller {
-    function __construct(){
+class Dash extends CI_Controller
+{
+   function __construct()
+   {
 
       parent::__construct();
-      $this->load->helper('menu_helper');
+      // $this->load->helper('menu_helper');
       $this->load->helper('file');
    }
-   function index(){
-     
+   function index()
+   {
+
       $this->load->view('layout/Admin');
    }
 }

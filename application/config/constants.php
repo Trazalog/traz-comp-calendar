@@ -102,5 +102,5 @@ define('CALENDARIO', 'traz-comp-calendar/');
 |
 |Servicios GET, POST, PUT, etc.
 */
-define('REST9', 'http://localhost:8089/');
+define('REST9', 'http://localhost:3000/');
 

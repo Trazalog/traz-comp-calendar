@@ -66,7 +66,8 @@
 <script>
    // document.addEventListener('DOMContentLoaded', function() {
    // var calendarEl = $('#calendar');
-   var calendarEl = document.getElementById('calendar');
+   // var calendarEl = document.getElementById('calendar');
+   var calendarEl = $('#calendar');
    // console.log('calendar');
    // console.table(calendarEl);
 
@@ -145,21 +146,20 @@
       // return eventos;
 
       $.ajax({
-         dataType: 'json',
          type: 'GET',
+         dataType: 'JSON',
          url: 'Calendario/getEventos/',
-
          success: function(e) {
             console.log(e);
             // var eventos = [];
             e = JSON.parse(e);
             for (let i = 0; i < e.length; i++) {
                eventos.push({
-                  title: e.titulo + '|' + descripcion,
-                  start: dia_incicio + ' ' + hora_inicio,
-                  end: dia_fin + ' ' + hora_fin,
-                  backgroundColor: color,
-                  duracion: hora_duracion
+                  title: e.titulo + '|' + e.descripcion,
+                  start: e.dia_incicio + ' ' + e.hora_inicio,
+                  end: e.dia_fin + ' ' + e.hora_fin,
+                  // backgroundColor: color,
+                  duracion: e.hora_duracion
                });
             }
 

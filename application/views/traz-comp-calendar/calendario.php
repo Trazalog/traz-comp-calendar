@@ -65,13 +65,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.js"></script>
 <!-- <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha256-pasqAKBDmFT4eHoN2ndd6lN370kFiGUFyTiUHWhU7k8=" crossorigin="anonymous"></script> -->
 <script>
-   // document.addEventListener('DOMContentLoaded', function() {
-   // var calendarEl = $('#calendar');
-   // var calendarEl = document.getElementById('calendar');
-   var calendarEl = $('#calendar');
-   // console.log('calendar');
-   // console.table(calendarEl);
-
+   var calendarEl = document.getElementById('calendar');
    var calendar = new FullCalendar.Calendar(calendarEl, {
       plugins: ['interaction', 'dayGrid', 'list', 'bootstrap'],
       header: {
@@ -79,32 +73,60 @@
          center: 'title',
          right: 'dayGridDay,dayGridWeek,dayGridMonth,list'
       },
-      // buttonText: {
-      //    today: 'Hoy',
-      //    month: 'Mes',
-      //    week: 'Semana',
-      //    day: 'Día',
-      //    list: 'Lista'
-      // },
       locale: 'es',
       themeSystem: 'bootstrap',
-      // events: [{
-      //       title: 'Nacho = Judas',
-      //       start: '2020-03-10 14:30',
-      //       // end: '2019-03-12T11:30:00',
-      //       extendedProps: {
-      //          department: 'BioChemistry'
-      //       },
-      //       description: 'Lecture',
-      //    }
-      //    // mas eventos ...
-      // ],
-      // events: getEvents(tipo_evento, callback),
       events: getEvents(),
       selectable: true,
       editable: true,
       droppable: true
    });
+
+   function getEvents() {
+      var eventos = [
+         // {
+         //    title: 'Nacho = Judas',
+         //    start: '2020-03-26 14:30',
+         //    end: '2010-03-26 17:30:00'
+         // },
+         // {
+         //    title: 'Nacho = Judas',
+         //    start: '2020-03-27 14:30',
+         //    end: '2010-03-27 17:30:00'
+         // },
+         // {
+         //    title: 'Nacho = Judas',
+         //    start: '2020-03-28 14:30'
+         // }
+      ];
+
+      $.ajax({
+         async: false,
+         type: 'GET',
+         dataType: 'JSON',
+         url: 'Calendario/getEventos/',
+         success: function(e) {
+            console.log(e);
+            // var eventos = [];
+            // e = JSON.parse(e);
+            for (let i = 0; i < e.length; i++) {
+               eventos.push({
+                  title: e[i].titulo,
+                  description: e[i].descripcion,
+                  start: e[i].dia_incicio + 'T' + e[i].hora_inicio,
+                  end: e[i].dia_fin + 'T' + e[i].hora_fin,
+                  // backgroundColor: color,
+                  duracion: e[i].hora_duracion
+               });
+            }
+            console.log("despues del for");
+            console.table(eventos);
+         },
+         error: function(e) {
+            alert("Error al cargar los eventos.");
+         }
+      });
+      return eventos;
+   }
 
    calendar.render();
 
@@ -112,103 +134,26 @@
    var str = $('#calendar').find('h2');
    str.text($(str).text().charAt(0).toUpperCase() + $(str).text().slice(1).toLowerCase());
 
-   // function getEvents(tipo_evento, callback) {
-   function getEvents() {
-      var eventos = [];
-      // var titulo = 'hola';
-      // var descripcion = 'como';
-      // var dia_incicio = '2020-03-10';
-      // var hora_inicio = '14:30';
-      // var hora_duracion = '15:00';
-      // var dia_fin = '2020-03-15';
-      // var hora_fin = '17:00';
-      // var color = '#f56954';
+   // calendar.render();
 
-      // for (let i = 0; i < eventos.length; i++) {
-      //    if (diaNoLaboral(dia_incicio)) {
-      //       alert('Dia no laborable.');
-      //    } else {
-      //       hs = hora_duracion - hs_jornada;
-      //       if (hs > 0) {
-      //          hora_fin_jornada - hs;
-      //          jornada_lab_sig = diaLaboralSiguiente(dia_incicio_sig);
-      //       }
-      //    }
-      // }
+   // function diaLaboralSiguiente(diaEvent) {
+   //    var diaLabSig = '';
+   //    $.ajax({
+   //       type: 'GET',
+   //       dataType: 'json',
+   //       url: 'Calendario/getDiaLabSig/' + diaEvent,
+   //       success: function(dia) {
 
-      // eventos.push({
-      //    title: titulo + '|' + descripcion,
-      //    start: dia_incicio + ' ' + hora_inicio,
-      //    // end: dia_fin + ' ' + hora_fin,
-      //    end: getFin(),
-      //    backgroundColor: color,
-      //    duracion: hora_duracion
-      // });
-      // return eventos;
-
-      $.ajax({
-         type: 'GET',
-         dataType: 'JSON',
-         url: 'Calendario/getEventos/',
-         success: function(e) {
-            console.log(e);
-            // var eventos = [];
-            e = JSON.parse(e);
-            for (let i = 0; i < e.length; i++) {
-               eventos.push({
-                  title: e.titulo + '|' + e.descripcion,
-                  start: e.dia_incicio + ' ' + e.hora_inicio,
-                  end: e.dia_fin + ' ' + e.hora_fin,
-                  // backgroundColor: color,
-                  duracion: e.hora_duracion
-               });
-            }
-
-            // eventos.push({
-            //    title: titulo + '|' + descripcion,
-            //    start: dia_incicio + ' ' + hora_inicio,
-            //    end: dia_fin + ' ' + hora_fin,
-            //    backgroundColor: color,
-            //    duracion: hora_duracion
-            // });
-            // $(e).each(function() {
-            // var titulo = $(this);
-            // var descripcion = $(this);
-            // var dia_incicio = $(this);
-            // var hora_inicio = $(this);
-            // var hora_duracion = $(this);
-            // var dia_fin = $(this);
-            // var hora_fin = $(this);
-            // })
-         },
-         error: function(e) {
-
-         }
-      });
-   }
-
-   function cargarHoras() {
-
-   }
-
-   function diaLaboralSiguiente(diaEvent) {
-      var diaLabSig = '';
-      $.ajax({
-         type: 'GET',
-         dataType: 'json',
-         url: 'Calendario/getDiaLabSig/' + diaEvent,
-         success: function(dia) {
-
-         },
-         error: function(dia) {
-            alert('Error al traer día.');
-         }
-      });
-      // while (diaNoLaboral(diaEvent)) {
-      //    diaLabSig = diaEvent;
-      // }
-      // return diaLabSig;
-   }
+   //       },
+   //       error: function(dia) {
+   //          alert('Error al traer día.');
+   //       }
+   //    });
+   //    // while (diaNoLaboral(diaEvent)) {
+   //    //    diaLabSig = diaEvent;
+   //    // }
+   //    // return diaLabSig;
+   // }
 
    // function diaNoLaboral(diaEvent) {
    //    diasNoLaborables = []; //TODO: cargar dias no laborales

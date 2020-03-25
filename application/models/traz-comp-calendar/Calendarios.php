@@ -11,8 +11,8 @@ class Calendarios extends CI_Model
 
    public function getEventos()
    {
-      $resource = 'getEventos/';
-      $url = REST9 . $resource;
+      $resource = 'eventos';
+      $url = REST8 . $resource;
       $rsp = $this->rest->callApi('GET', $url);
       if ($rsp['status']) {
          $rsp['data'] = json_decode($rsp['data'])->eventos->evento;
@@ -27,12 +27,12 @@ class Calendarios extends CI_Model
 
       $arrayDatos['dia'] = $dia;
       $arrayDatos['minTask'] = $minTask;
-      $data['_post_evento'] = $$arrayDatos;
+      $data['_post_evento'] = $arrayDatos;
       $datos = json_encode($data);
       log_message('DEBUG', 'Calendarios/setEvento-> ' . $datos);
 
-      $resource = ''; //cargar patch
-      $url = REST9 . $resource;
+      $resource = 'dias/dividir'; //cargar patch
+      $url = REST8 . $resource;
 
       $array = $this->rest->callAPI("POST", $url, $data);
       // wso2Msj($array);
@@ -42,10 +42,10 @@ class Calendarios extends CI_Model
    public function getDiasNoLab()
    {
       log_message('DEBUG', 'Calendarios/getDiaNoLab');
-      $resource = '/diasNoLaborables';
-      $url = REST9 . $resource;
+      $resource = 'dias/nolaborables';
+      $url = REST8 . $resource;
       $array = $this->rest->callAPI("GET", $url);
-      $rsp = json_decode($array['data']);
+      $rsp = json_decode($array['data'])->dias->dia;
       return $rsp;
    }
 }

@@ -1,2 +1,0 @@
-Agregar en constants.php de la carpeta config:
-define('CALENDARIO', 'traz-comp-calendar/');  

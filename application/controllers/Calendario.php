@@ -26,7 +26,7 @@ class Calendario extends CI_Controller
          $jornada = '08:00'; //duracion de la jornada laboral
          $minJornada = $this->hoursToMinutes($jornada);
 
-         $horaFinJornada = '19:00';
+         $horaFinJornada = '23:00';
          $minFinJornada = $this->hoursToMinutes($horaFinJornada);
 
          if (isset($data[$i]->hora_inicio)) { //si el evento está cargado con hora de inicio, comienza ahi

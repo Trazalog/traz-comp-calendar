@@ -67,6 +67,11 @@
 <script>
    var calendarEl = document.getElementById('calendar');
    var calendar = new FullCalendar.Calendar(calendarEl, {
+      timeZone: 'local',
+      dateClick: function(arg) {
+         console.log(arg.date.toString()); // use *local* methods on the native Date Object
+         // will output something like 'Sat Sep 01 2018 00:00:00 GMT-XX:XX (Eastern Daylight Time)'
+      },
       plugins: ['interaction', 'dayGrid', 'list', 'bootstrap'],
       header: {
          left: 'prev,next, today',
@@ -164,6 +169,10 @@
    //    }
    //    return false;
    // }
+
+   function openPanel() {
+
+   }
 </script>
 
 </html>

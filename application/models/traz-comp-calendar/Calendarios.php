@@ -11,7 +11,7 @@ class Calendarios extends CI_Model
 
    public function getEventos()
    {
-      $resource = 'eventos';
+      $resource = 'getEventos';
       $url = REST8 . $resource;
       $rsp = $this->rest->callApi('GET', $url);
       if ($rsp['status']) {
@@ -42,7 +42,7 @@ class Calendarios extends CI_Model
    public function getDiasNoLab()
    {
       log_message('DEBUG', 'Calendarios/getDiaNoLab');
-      $resource = 'dias/nolaborables';
+      $resource = 'getDiasNoLaborables';
       $url = REST8 . $resource;
       $array = $this->rest->callAPI("GET", $url);
       $rsp = json_decode($array['data'])->dias->dia;

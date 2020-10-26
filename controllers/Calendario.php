@@ -14,9 +14,9 @@ class Calendario extends CI_Controller
       // $this->getEventos();
    }
 
-   public function getEventos()
+   public function getEventos($tipoEvento)
    {
-      $rsp = $this->Calendarios->getEventos();
+      $rsp = $this->Calendarios->getEventos($tipoEvento);
       $data = $rsp['data'];
       $seFracciono = false;
       $i = 0;

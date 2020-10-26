@@ -41,49 +41,31 @@ var calendar = new FullCalendar.Calendar(calendarEl, {
 });
 
 function getEvents() {
-   var eventos = [
-      // {
-      //    title: 'Nacho = Judas',
-      //    start: '2020-03-26 14:30',
-      //    end: '2010-03-26 17:30:00'
-      // },
-      // {
-      //    title: 'Nacho = Judas',
-      //    start: '2020-03-27 14:30',
-      //    end: '2010-03-27 17:30:00'
-      // },
-      // {
-      //    title: 'Nacho = Judas',
-      //    start: '2020-03-28 14:30'
-      // }
-   ];
-   return;
+   var eventos = [];
+
    $.ajax({
       async: false,
       type: 'GET',
       dataType: 'JSON',
-      url: 'Calendario/getEventos/',
+      url: '<?php echo base_url(CAL) ?>calendario/getEventos/tareas_planificadas',
       success: function(e) {
          console.log(e);
-         // var eventos = [];
-         // e = JSON.parse(e);
          for (let i = 0; i < e.length; i++) {
             eventos.push({
                title: e[i].titulo,
                description: e[i].descripcion,
-               start: e[i].dia_incicio + 'T' + e[i].hora_inicio,
-               end: e[i].dia_fin + 'T' + e[i].hora_fin,
-               // backgroundColor: color,
+               start: e[i].dia_inicio + 'T00:00' ,//+ e[i].hora_inicio,
+               end: e[i].dia_fin + 'T00:00',// + e[i].hora_fin,
+               backgroundColor: 'red',
                duracion: e[i].hora_duracion
             });
          }
-         console.log("despues del for");
-         console.table(eventos);
       },
       error: function(e) {
          alert("Error al cargar los eventos.");
       }
    });
+   console.log(eventos);
    return eventos;
 }
 

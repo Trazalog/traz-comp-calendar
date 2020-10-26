@@ -9,7 +9,37 @@ class Calendarios extends CI_Model
       // $this->load->library('REST');
    }
 
-   public function getEventos()
+   public function getEventos($tipoEvento)
+   {
+      switch ($tipoEvento) {
+         case 'tareas_planificadas':
+            $url = REST_TST.'/tareas/eventos';
+            break;
+         
+         default:
+            # code...
+            break;
+      }
+
+      $rsp = wso2($url);
+      if($rsp['status']){
+         $rsp['data'] = $this->map($rsp['data']);
+      }
+
+      return $rsp;
+   }
+
+   public function map($data)
+   {
+      foreach ($data as $key => $o) {
+         $data[$key]->dia_inicio = substr($o->dia_inicio, 0, 10);
+         $data[$key]->dia_fin = substr($o->dia_fin, 0, 10);
+         $data[$key]->hora_duracion = substr($o->hora_duracion, 0, 5);
+      }
+      return $data;
+   }
+
+   public function xgetEventos($tipoEvento)
    {
       $resource = 'eventos';
       $url = REST8 . $resource;

@@ -13,7 +13,7 @@ class Calendarios extends CI_Model
    {
       switch ($tipoEvento) {
          case 'tareas_planificadas':
-            $url = REST_TST.'/tareas/eventos';
+            $url = REST_TST.'/tareas/eventos/'.empresa();
             break;
          
          default:
@@ -32,9 +32,9 @@ class Calendarios extends CI_Model
    public function map($data)
    {
       foreach ($data as $key => $o) {
-         $data[$key]->dia_inicio = substr($o->dia_inicio, 0, 10);
-         $data[$key]->dia_fin = substr($o->dia_fin, 0, 10);
-         $data[$key]->hora_duracion = substr($o->hora_duracion, 0, 5);
+         $data[$key]->dia_inicio = str_replace('+', 'T', $o->dia_inicio);
+         $data[$key]->dia_fin = str_replace('+', 'T', $o->dia_fin);
+         $data[$key]->hora_duracion = $o->tiempo_duracion;
       }
       return $data;
    }

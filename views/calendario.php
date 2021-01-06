@@ -31,7 +31,31 @@ var calendar = new FullCalendar.Calendar(calendarEl, {
     },
     locale: 'es',
     themeSystem: 'bootstrap',
-    events: getEvents(),
+    events: function(info, successCallback, failureCallback) {
+        $.ajax({
+            type: 'GET',
+            dataType: 'JSON',
+            url: '<?php echo base_url(CAL) ?>calendario/getEventos/tareas_planificadas',
+            success: function(e) {
+                console.log(e);
+                   var eventos = [];
+                for (let i = 0; i < e.length; i++) {
+                    eventos.push({
+                        title: e[i].titulo,
+                        description: e[i].descripcion,
+                        start: e[i].dia_inicio,
+                        end: e[i].dia_fin,
+                        backgroundColor: 'red',
+                        duracion: e[i].hora_duracion
+                    });
+                }
+                successCallback(eventos);
+            },
+            error: function(e) {
+                alert("Error al cargar los eventos.");
+            }
+        });
+    },
     selectable: true,
     editable: true,
     droppable: true,
@@ -40,52 +64,38 @@ var calendar = new FullCalendar.Calendar(calendarEl, {
     }
 });
 
-function getEvents() {
-   var eventos = [
-      // {
-      //    title: 'Nacho = Judas',
-      //    start: '2020-03-26 14:30',
-      //    end: '2010-03-26 17:30:00'
-      // },
-      // {
-      //    title: 'Nacho = Judas',
-      //    start: '2020-03-27 14:30',
-      //    end: '2010-03-27 17:30:00'
-      // },
-      // {
-      //    title: 'Nacho = Judas',
-      //    start: '2020-03-28 14:30'
-      // }
-   ];
-   return;
-   $.ajax({
-      async: false,
-      type: 'GET',
-      dataType: 'JSON',
-      url: 'Calendario/getEventos/',
-      success: function(e) {
-         console.log(e);
-         // var eventos = [];
-         // e = JSON.parse(e);
-         for (let i = 0; i < e.length; i++) {
-            eventos.push({
-               title: e[i].titulo,
-               description: e[i].descripcion,
-               start: e[i].dia_incicio + 'T' + e[i].hora_inicio,
-               end: e[i].dia_fin + 'T' + e[i].hora_fin,
-               // backgroundColor: color,
-               duracion: e[i].hora_duracion
-            });
-         }
-         console.log("despues del for");
-         console.table(eventos);
-      },
-      error: function(e) {
-         alert("Error al cargar los eventos.");
-      }
-   });
-   return eventos;
+var getEvents = function() {
+    var eventos = [];
+    $.ajax({
+        type: 'GET',
+        dataType: 'JSON',
+        url: '<?php echo base_url(CAL) ?>calendario/getEventos/tareas_planificadas',
+        success: function(e) {
+            console.log(e);
+            for (let i = 0; i < e.length; i++) {
+                eventos.push({
+                    title: e[i].titulo,
+                    description: e[i].descripcion,
+                    start: e[i].dia_inicio,
+                    end: e[i].dia_fin,
+                    backgroundColor: 'red',
+                    duracion: e[i].hora_duracion
+                });
+            }
+            successCallback(eventos);
+        },
+        error: function(e) {
+            alert("Error al cargar los eventos.");
+        }
+    });
+
 }
+
+function calendarRefetchEvents(){
+  $('.fc-prev-button').click();
+  $('.fc-next-button').click();
+}
+
 
 calendar.render();
 

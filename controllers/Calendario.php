@@ -14,28 +14,25 @@ class Calendario extends CI_Controller
       // $this->getEventos();
    }
 
-   public function getEventos()
+   public function getEventos($tipoEvento)
    {
-      $rsp = $this->Calendarios->getEventos();
+      $rsp = $this->Calendarios->getEventos($tipoEvento);
       $data = $rsp['data'];
       $seFracciono = false;
       $i = 0;
       foreach ($data as $key) {
          // if ($rsp['status']) {
          $minTask = $this->hoursToMinutes($data[$i]->hora_duracion);
-         $jornada = '08:00'; //duracion de la jornada laboral
+         $jornada = DURACION_JORNADA; //duracion de la jornada laboral
          $minJornada = $this->hoursToMinutes($jornada);
 
-         $horaFinJornada = '19:00';
+         $horaFinJornada = HORA_FIN_JORNADA;
          $minFinJornada = $this->hoursToMinutes($horaFinJornada);
 
          if (isset($data[$i]->hora_inicio)) { //si el evento está cargado con hora de inicio, comienza ahi
             $horaActualSimple = $data[$i]->hora_inicio;
          } else {//sino quiere decir que va a comezar en el momento actual
-            // $horaActual = date("G"); //hora actual de la jornada en curso //marca solo la hora no los min
-            // $horaActual = getdate();
-            // $horaActualSimple = $horaActual['hours'] . ':' .  $horaActual['minutes'];
-            $horaActualSimple = "13:00";
+            $horaActualSimple = date('H:i');
          }
 
          $minActualJornada = $this->hoursToMinutes($horaActualSimple);

@@ -37,6 +37,7 @@ class Calendarios extends CI_Model
          $data[$key]->dia_fin = str_replace('+', 'T', $o->dia_fin);
          if(!empty($o->hora_duracion)){$data[$key]->hora_duracion = $o->hora_duracion;}else{$data[$key]->hora_duracion = "0";}
          // $data[$key]->hora_duracion = $o->tiempo_duracion;
+         $data[$key]->hora_inicio = date("H:i",strtotime($o->hora_inicio));
       }
       return $data;
    }

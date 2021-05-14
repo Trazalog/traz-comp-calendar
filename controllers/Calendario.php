@@ -130,6 +130,10 @@ class Calendario extends CI_Controller
    {
       $hours = (int) ($minutes / 60);
       $minutes -= $hours * 60;
-      return sprintf("0%d:%02.0f", $hours, $minutes);
+      if($hours >= 10){
+         return sprintf("%d:%02.0f", $hours, $minutes);
+      }else{
+         return sprintf("0%d:%02.0f", $hours, $minutes);
+      }
    }
 }

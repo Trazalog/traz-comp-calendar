@@ -1,6 +1,6 @@
 <link href='lib/fullcalendar/core/main.css' rel='stylesheet' />
 <link href='lib/fullcalendar/daygrid/main.css' rel='stylesheet' />
-<!-- <link href='lib/fullcalendar/timegrid/main.css' rel='stylesheet' /> -->
+<link href='lib/fullcalendar/timegrid/main.css' rel='stylesheet' />
 <link href='lib/fullcalendar/list/main.css' rel='stylesheet' />
 
 
@@ -12,7 +12,7 @@
 <script src='lib/fullcalendar/core/main.js'></script>
 <script src='lib/fullcalendar/daygrid/main.js'></script>
 <script src='lib/fullcalendar/interaction/main.js'></script>
-<!-- <script src='fullcalendar/timegrid/main.js'></script> -->
+<script src='lib/fullcalendar/timegrid/main.js'></script>
 <script src='lib/fullcalendar/list/main.js'></script>
 <!-- <script src='fullcalendar/google-calendar/main.js'></script> -->
 <script src='lib/fullcalendar/core/locales/es.js'></script>
@@ -21,14 +21,24 @@
 <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.js"></script> -->
 <!-- <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha256-pasqAKBDmFT4eHoN2ndd6lN370kFiGUFyTiUHWhU7k8=" crossorigin="anonymous"></script> -->
 <script>
+//View_opciones = dayGridDay,timeGridWeek,timeGrid(custom)
 var calendarEl = document.getElementById('calendar');
 var calendar = new FullCalendar.Calendar(calendarEl, {
-    plugins: ['interaction', 'dayGrid', 'list', 'bootstrap'],
+    plugins: ['interaction', 'dayGrid', 'list', 'bootstrap','timeGrid'],
     header: {
         left: 'prev,next, today',
         center: 'title',
-        right: 'dayGridDay,dayGridWeek,dayGridMonth,list'
+        right: 'timeGrid,dayGridWeek,dayGridMonth,list'
     },
+    views: {
+        timeGrid: {
+            type: 'timeGrid',
+            minTime: '<?php echo HORA_INICIO_JORNADA ?>:00',
+            maxTime: '<?php echo HORA_FIN_JORNADA ?>:00',
+            buttonText: 'Día'
+        }
+    },
+    // weekends: false,
     locale: 'es',
     themeSystem: 'bootstrap',
     events: function(info, successCallback, failureCallback) {

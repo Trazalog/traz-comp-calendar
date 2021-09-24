@@ -25,7 +25,8 @@ class Calendarios extends CI_Model
       if($rsp['status']){
          $rsp['data'] = $this->map($rsp['data']);
       }
-
+      
+      log_message("DEBUG","#TRAZA | MODEL Calendarios | getEventos() | data >>". json_encode($rsp['data']));
       return $rsp;
    }
 
@@ -34,7 +35,9 @@ class Calendarios extends CI_Model
       foreach ($data as $key => $o) {
          $data[$key]->dia_inicio = str_replace('+', 'T', $o->dia_inicio);
          $data[$key]->dia_fin = str_replace('+', 'T', $o->dia_fin);
-         $data[$key]->hora_duracion = $o->tiempo_duracion;
+         if(!empty($o->hora_duracion)){$data[$key]->hora_duracion = $o->hora_duracion;}else{$data[$key]->hora_duracion = "0";}
+         // $data[$key]->hora_duracion = $o->tiempo_duracion;
+         $data[$key]->hora_inicio = date("H:i",strtotime($o->hora_inicio));
       }
       return $data;
    }
@@ -71,11 +74,20 @@ class Calendarios extends CI_Model
 
    public function getDiasNoLab()
    {
-      log_message('DEBUG', 'Calendarios/getDiaNoLab');
-      $resource = 'dias/nolaborables';
-      $url = REST8 . $resource;
-      $array = $this->rest->callAPI("GET", $url);
-      $rsp = json_decode($array['data'])->dias->dia;
+      //falta desarrollar
+      $diasNoLab = array("2021-05-25","2021-05-01","2021-05-02","2021-05-09");
+      $rsp = array();
+      foreach ($diasNoLab as $key => $value) {
+         $rsp[$key] = new stdClass();
+         $rsp[$key]->fecha = $value;
+      }
+
+      // $resource = 'dias/nolaborables';
+      // $url = REST8 . $resource;
+      // $array = $this->rest->callAPI("GET", $url);
+      // $rsp = json_decode($array['data'])->dias->dia;
+      // $rsp = json_decode($array)->dias->dia;
+      // log_message('DEBUG', 'Calendarios/getDiaNoLab'.json_encode($rsp));
       return $rsp;
    }
 }

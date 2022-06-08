@@ -1,16 +1,17 @@
 <?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 
 
-class Calendarios extends CI_Model
-{
-   function __construct()
-   {
-      parent::__construct();
-      // $this->load->library('REST');
-   }
+class Calendarios extends CI_Model{
 
-   public function getEventos($tipoEvento)
-   {
+   function __construct(){
+      parent::__construct();
+   }
+   /**
+	* Recibe un tipo de evento y busca las tareas relacionadas con ese tipo
+	* @param string $tipoEvento
+	* @return array listado de tareas coincidentes con el parámetro
+	*/
+   public function getEventos($tipoEvento){
       switch ($tipoEvento) {
          case 'tareas_planificadas':
             $url = REST_TST.'/tareas/eventos/'.empresa();
@@ -29,9 +30,12 @@ class Calendarios extends CI_Model
       log_message("DEBUG","#TRAZA | MODEL Calendarios | getEventos() | data >>". json_encode($rsp['data']));
       return $rsp;
    }
-
-   public function map($data)
-   {
+   /**
+	* Formatea los eventos recibidos, co nel formato requerido por el plugin del calendario
+	* @param array $data con eventos
+	* @return array listado de tareas formateadas	
+   */
+   public function map($data){
       foreach ($data as $key => $o) {
          $data[$key]->dia_inicio = str_replace('+', 'T', $o->dia_inicio);
          $data[$key]->dia_fin = str_replace('+', 'T', $o->dia_fin);
@@ -40,17 +44,6 @@ class Calendarios extends CI_Model
          $data[$key]->hora_inicio = date("H:i",strtotime($o->hora_inicio));
       }
       return $data;
-   }
-
-   public function xgetEventos($tipoEvento)
-   {
-      $resource = 'eventos';
-      $url = REST8 . $resource;
-      $rsp = $this->rest->callApi('GET', $url);
-      if ($rsp['status']) {
-         $rsp['data'] = json_decode($rsp['data'])->eventos->evento;
-      }
-      return $rsp;
    }
 
    public function setEvento($dia, $minTask)

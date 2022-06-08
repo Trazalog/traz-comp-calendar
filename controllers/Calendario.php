@@ -7,15 +7,13 @@ class Calendario extends CI_Controller
       parent::__construct();
       $this->load->model('traz-comp-calendar/Calendarios');
    }
-   public function index()
-   {
-      // $data['eventos'] = $this->Calendarios->getEventos();
+   public function index(){
       $this->load->view('traz-comp-calendar/calendario');
-      // $this->getEventos();
    }
 
-   public function getEventos($tipoEvento)
-   {
+   public function getEventos($tipoEvento){
+      log_message('DEBUG', '#TRAZA | #TRAZ-COMP-CALENDAR | Calendario | getEventos() >> tipoEvento -> '.json_encode($tipoEvento));
+
       $rsp = $this->Calendarios->getEventos($tipoEvento);
       $data = $rsp['data'];
       $seFracciono = false;

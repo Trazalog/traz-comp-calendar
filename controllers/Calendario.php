@@ -11,13 +11,15 @@ class Calendario extends CI_Controller
       $this->load->view('traz-comp-calendar/calendario');
    }
 
-   public function getEventos($tipoEvento){
-      log_message('DEBUG', '#TRAZA | #TRAZ-COMP-CALENDAR | Calendario | getEventos() >> tipoEvento -> '.json_encode($tipoEvento));
+   public function getEventos(){
+      log_message('DEBUG', '#TRAZA | #TRAZ-COMP-CALENDAR | Calendario | getEventos()');
 
-      $rsp = $this->Calendarios->getEventos($tipoEvento);
+      $data = $this->input->post();
+      $rsp = $this->Calendarios->getEventos($data);
       $data = $rsp['data'];
       $seFracciono = false;
       $i = 0;
+      
       foreach ($data as $key) {
          // if ($rsp['status']) {
          $minTask = $this->hoursToMinutes($data[$i]->hora_duracion);

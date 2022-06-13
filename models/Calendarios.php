@@ -7,16 +7,19 @@ class Calendarios extends CI_Model{
       parent::__construct();
    }
    /**
-	* Recibe un tipo de evento y busca las tareas relacionadas con ese tipo
-	* @param string $tipoEvento
+	* Recibe un tipo de evento y los filtros seleccionados, busca las tareas relacionadas con ese tipo coincidentes con los filtros
+	* @param string $tipoEvento y array $filtros
 	* @return array listado de tareas coincidentes con el parámetro
 	*/
-   public function getEventos($tipoEvento){
-      switch ($tipoEvento) {
+   public function getEventos($data){
+      switch ($data['tipoEvento']) {
          case 'tareas_planificadas':
             $url = REST_TST.'/tareas/eventos/'.empresa();
             break;
-         
+         case 'tareas_planificadas_filtradas':
+            $url = REST_TST.'/tareas/eventos/'.empresa();
+            break;
+
          default:
             # code...
             break;
@@ -40,7 +43,6 @@ class Calendarios extends CI_Model{
          $data[$key]->dia_inicio = str_replace('+', 'T', $o->dia_inicio);
          $data[$key]->dia_fin = str_replace('+', 'T', $o->dia_fin);
          if(!empty($o->hora_duracion)){$data[$key]->hora_duracion = $o->hora_duracion;}else{$data[$key]->hora_duracion = "0";}
-         // $data[$key]->hora_duracion = $o->tiempo_duracion;
          $data[$key]->hora_inicio = date("H:i",strtotime($o->hora_inicio));
       }
       return $data;

@@ -42,13 +42,23 @@ var calendar = new FullCalendar.Calendar(calendarEl, {
     locale: 'es',
     themeSystem: 'bootstrap',
     events: function(info, successCallback, failureCallback) {
+        data = {};
+        data.tipoEvento = 'tareas_planificadas';
+        if ( $('#seccionFiltros').children().length > 0 ) {
+            $('#seccionFiltros div.permTransito').each(function(i, obj) {
+                aux = $(obj).attr('data-json');
+                json = JSON.parse(aux);
+            });
+            data.filtros = {"algo":"eso mismo"};
+        }
+        
         $.ajax({
-            type: 'GET',
+            type: 'POST',
             dataType: 'JSON',
-            url: '<?php echo base_url(CAL) ?>calendario/getEventos/tareas_planificadas',
+            data: data,
+            url: '<?php echo base_url(CAL) ?>calendario/getEventos',
             success: function(e) {
-                console.log(e);
-                   var eventos = [];
+                var eventos = [];
                 for (let i = 0; i < e.length; i++) {
                     eventos.push({
                         title: e[i].titulo,

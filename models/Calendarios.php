@@ -17,7 +17,15 @@ class Calendarios extends CI_Model{
             $url = REST_TST.'/tareas/eventos/'.empresa();
             break;
          case 'tareas_planificadas_filtradas':
-            $url = REST_TST.'/tareas/eventos/'.empresa();
+            $url = REST_TST.'/tareas/eventos/empresa/'.empresa().'?';
+            if(count($data['filtros']) == 1){
+               $url .= 'rec_id_list='.$data['filtros'][0]['equipo'];
+            }else{
+               $url .= 'rec_id_list='.$data['filtros'][0]['equipo'];
+               for ($i=1; $i < count($data['filtros']); $i++) { 
+                  $url .= '&rec_id_list='.$data['filtros'][$i]['equipo'];
+               }
+            }
             break;
 
          default:

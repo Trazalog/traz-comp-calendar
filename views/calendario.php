@@ -45,11 +45,13 @@ var calendar = new FullCalendar.Calendar(calendarEl, {
         data = {};
         data.tipoEvento = 'tareas_planificadas';
         if ( $('#seccionFiltros').children().length > 0 ) {
-            $('#seccionFiltros div.permTransito').each(function(i, obj) {
+            data.tipoEvento = 'tareas_planificadas_filtradas';
+            data.filtros = [];
+            $('#seccionFiltros span').each(function(i, obj) {
                 aux = $(obj).attr('data-json');
                 json = JSON.parse(aux);
+                data.filtros[i] = {"equipo": json.equipo};
             });
-            data.filtros = {"algo":"eso mismo"};
         }
         
         $.ajax({

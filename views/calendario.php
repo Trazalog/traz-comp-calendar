@@ -17,9 +17,6 @@
 <!-- <script src='fullcalendar/google-calendar/main.js'></script> -->
 <script src='lib/fullcalendar/core/locales/es.js'></script>
 <script src='lib/fullcalendar/bootstrap/main.js'></script>
-
-<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.js"></script> -->
-<!-- <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha256-pasqAKBDmFT4eHoN2ndd6lN370kFiGUFyTiUHWhU7k8=" crossorigin="anonymous"></script> -->
 <script>
 //View_opciones = dayGridDay,timeGridWeek,timeGrid(custom)
 var calendarEl = document.getElementById('calendar');
@@ -42,13 +39,26 @@ var calendar = new FullCalendar.Calendar(calendarEl, {
     locale: 'es',
     themeSystem: 'bootstrap',
     events: function(info, successCallback, failureCallback) {
+        wbox('#box-calendario');
+        data = {};
+        data.tipoEvento = 'tareas_planificadas';
+        if ( $('#seccionFiltros').children().length > 0 ) {
+            data.tipoEvento = 'tareas_planificadas_filtradas';
+            data.filtros = [];
+            $('#seccionFiltros span').each(function(i, obj) {
+                aux = $(obj).attr('data-json');
+                json = JSON.parse(aux);
+                data.filtros[i] = {"equipo": json.equipo};
+            });
+        }
+        
         $.ajax({
-            type: 'GET',
+            type: 'POST',
             dataType: 'JSON',
-            url: '<?php echo base_url(CAL) ?>calendario/getEventos/tareas_planificadas',
+            data: data,
+            url: '<?php echo base_url(CAL) ?>calendario/getEventos',
             success: function(e) {
-                console.log(e);
-                   var eventos = [];
+                var eventos = [];
                 for (let i = 0; i < e.length; i++) {
                     eventos.push({
                         title: e[i].titulo,
@@ -63,8 +73,15 @@ var calendar = new FullCalendar.Calendar(calendarEl, {
             },
             error: function(e) {
                 alert("Error al cargar los eventos.");
+            },
+            complete: () => {
+                wbox();
             }
         });
+    },
+    eventRender: function(event, element, view ) {
+        // wbox('#box-calendario');
+        console.log("Eventos renderizados");
     },
     selectable: true,
     editable: true,
@@ -100,7 +117,7 @@ var getEvents = function() {
     });
 
 }
-
+//Falsea el click en los botones del calendario para llamar a la funcion events definida en la instancia del fullcalendar 
 function calendarRefetchEvents(){
   $('.fc-prev-button').click();
   $('.fc-next-button').click();

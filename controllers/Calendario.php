@@ -7,19 +7,19 @@ class Calendario extends CI_Controller
       parent::__construct();
       $this->load->model('traz-comp-calendar/Calendarios');
    }
-   public function index()
-   {
-      // $data['eventos'] = $this->Calendarios->getEventos();
+   public function index(){
       $this->load->view('traz-comp-calendar/calendario');
-      // $this->getEventos();
    }
 
-   public function getEventos($tipoEvento)
-   {
-      $rsp = $this->Calendarios->getEventos($tipoEvento);
+   public function getEventos(){
+      log_message('DEBUG', '#TRAZA | #TRAZ-COMP-CALENDAR | Calendario | getEventos()');
+
+      $data = $this->input->post();
+      $rsp = $this->Calendarios->getEventos($data);
       $data = $rsp['data'];
       $seFracciono = false;
       $i = 0;
+      
       foreach ($data as $key) {
          // if ($rsp['status']) {
          $minTask = $this->hoursToMinutes($data[$i]->hora_duracion);

@@ -38,7 +38,7 @@ class Calendarios extends CI_Model{
          $rsp['data'] = $this->map($rsp['data']);
       }
       
-      log_message("DEBUG","#TRAZA | MODEL Calendarios | getEventos() | data >>". json_encode($rsp['data']));
+      log_message("DEBUG","#TRAZA | MODEL Calendarios | getEventos()");
       return $rsp;
    }
    /**
